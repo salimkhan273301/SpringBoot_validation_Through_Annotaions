@@ -1,55 +1,51 @@
 package com.servosys.dto;
 
+import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-import jakarta.validation.constraints.*;
-import lombok.*;
-
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class StudentDTO {
-
+    
     private Long id;
-
+    
     @NotBlank(message = "First name is required")
-    @Size(min = 2, max = 50)
+    @Size(min = 2, max = 50, message = "First name must be between 2 and 50 characters")
     private String firstName;
-
+    
     @NotBlank(message = "Last name is required")
-    @Size(min = 2, max = 50)
+    @Size(min = 2, max = 50, message = "Last name must be between 2 and 50 characters")
     private String lastName;
-
-    @NotBlank
-    @Email(message = "Invalid email format")
+    
+    @NotBlank(message = "Email is required")
+    @Email(message = "Email should be valid")
     private String email;
-
-    @NotBlank
-    @Pattern(
-        regexp = "^[6-9]\\d{9}$",
-        message = "Phone number must be valid Indian number"
-    )
-    private String phone;
-
-    @NotNull
-    @Past(message = "DOB must be in the past")
+    
+    @Pattern(regexp = "^\\+?[1-9][0-9]{7,14}$", 
+             message = "Phone number should be valid (7-14 digits)")
+    private String phoneNumber;
+    
+    @NotNull(message = "Date of birth is required")
+    @Past(message = "Date of birth must be in the past")
     private LocalDate dateOfBirth;
-
-    @NotBlank
+    
+    @NotBlank(message = "Department is required")
     private String department;
-
-    @NotNull
-    @Min(1)
-    @Max(4)
-    private Integer academicYear;
-
-    @NotNull
-    @DecimalMin(value = "0.0")
-    @DecimalMax(value = "10.0")
+    
+    @Min(value = 1, message = "Year must be at least 1")
+    @Max(value = 5, message = "Year cannot be more than 5")
+    private Integer year;
+    
+    @DecimalMin(value = "0.0", message = "CGPA must be at least 0.0")
+    @DecimalMax(value = "10.0", message = "CGPA cannot be more than 10.0")
     private Double cgpa;
-
-    private Boolean active;
+    
+    private Boolean isActive;
 }
